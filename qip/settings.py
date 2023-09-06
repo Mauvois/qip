@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'qipu_app',
 ]
 
 MIDDLEWARE = [
@@ -81,21 +82,18 @@ if "ENV_PATH" in os.environ:
     for env_path in os.environ["ENV_PATH"].split(":"):
         dotenv.load_dotenv(env_path)
 
-try:
 
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ('NAME'),
-            'HOST': os.environ('HOST'),
-            'PORT': os.environ('PORT'),
-            'USER': os.environ('USER'),
-            'PASSWORD': os.environ('PASSWORD')
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['DATABASE_NAME'],
+        'HOST': os.environ['DATABASE_HOST'],
+        'PORT': os.environ['DATABASE_PORT'],
+        'USER': os.environ['DATABASE_USER'],
+        'PASSWORD': os.environ['DATABASE_PASSWORD']
 
-        }
     }
-except:
-    pass
+}
 
 
 # Password validation
