@@ -75,6 +75,8 @@ WSGI_APPLICATION = 'qip.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+dotenv.load_dotenv()
+
 if "ENV_PATH" in os.environ:
     for env_path in os.environ["ENV_PATH"].split(":"):
         dotenv.load_dotenv(env_path)
