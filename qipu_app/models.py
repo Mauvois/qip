@@ -16,21 +16,60 @@ class user (models.Model):
 
 class media (models.Model):
     created_time = models.DateTimeField()
-    user_id = models.CharField(max_length=50)
-    recurrence_id = models.ForeignKey('self'null=True, blank=True, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        'user',
+        on_delete=models.CASCADE,
+    )
     caption = models.CharField(max_length=50)
     media_type = models.CharField(max_length=50)
     permalink = models.CharField(max_length=50)
     shortcode = models.CharField(max_length=50)
     storage_file = models.FileField(
-        upload_to='your-upload-path/', storage=default_storage)
+        upload_to='your-upload-path/', storage='default_storage')
     is_published = models.BooleanField()
     category = models.IntegerField()
 
 
 class post (models.Model):
-    user_id = models.CharField(max_length=50)
-    content = models.TextField(max_length=1000)
     created_time = models.DateTimeField()
-        
-    privacy_settings = 
+    user_id = models.ForeignKey(
+        'user',
+        on_delete=models.CASCADE,
+    )
+    content = models.TextField(max_length=1000)
+
+
+class event (models.Model):
+    created_time = models.DateTimeField()
+    user_id = models.CharField(max_length=50)
+    title = models.CharField(max_length=50)
+    description = models.TextField(max_length=1000)
+    location = models.CharField(max_length=100)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    recurrence_id = models.ForeignKey(
+        'self', null=True, blank=True, on_delete=models.CASCADE)
+
+
+class contacter (models.Model):
+    contacted_id = models.ForeignKey(
+        'user',
+        on_delete=models.CASCADE,
+    )
+    out_request_date = models.DateTimeField()
+    in_request_date = models.DateTimeField()
+    # set choices (pending, accepted, refused)
+    invite_status = models.CharField(max_length=50)
+
+
+class attendee (models.Model):
+    event = models.ForeignKey(
+        'event',
+        on_delete=models.CASCADE,
+    )
+    user = models.ForeignKey(
+        'user',
+        on_delete=models.CASCADE,
+    )
+    # set choices (pending, accepted, refused)
+    status = models.CharField(max_length=50)
