@@ -96,6 +96,16 @@ DATABASES = {
 }
 
 
+# Storage
+## Il y a certainement des choses à rajouter dans le fichier .ENV, à vérifier
+
+# DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+
+# GS_BUCKET_NAME = 'your-bucket-name'
+# GS_PROJECT_ID = 'your-project-id'
+# GS_MEDIA_BUCKET_NAME = 'your-media-bucket-name'  # Optional, for media files
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
