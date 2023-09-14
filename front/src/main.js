@@ -9,3 +9,10 @@ createApp({
         };
     }
 }).mount('#app');
+
+
+const app = Vue.createApp({
+    // options du composant
+  });
+  
+  app.mount('#app');
