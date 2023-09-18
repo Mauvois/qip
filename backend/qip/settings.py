@@ -14,19 +14,25 @@ from pathlib import Path
 import dotenv
 import os
 
+dotenv.load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
+FRONTEND_DIR = BASE_DIR / 'frontend'
+BACKEND_DIR = BASE_DIR / 'backend'
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-e60-m3^m*9#-b5ht_4jc4282h8wt^-it3!0c22)lmgd53e)ozf'
+SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ['DEBUG'].lower() == 'true'
 
+# for production, always set it to the domains your app will be hosted on.
 ALLOWED_HOSTS = []
 
 
@@ -47,7 +53,7 @@ WEBPACK_LOADER = {
     'DEFAULT': {
         'CACHE': not DEBUG,
         'BUNDLE_DIR_NAME': '/',  # end with slash
-        'STATS_FILE': os.path.join(BASE_DIR, 'front/webpack-stats.json'),
+        'STATS_FILE': FRONTEND_DIR / 'webpack-stats.json',
         'POLL_INTERVAL': 0.1,
         'TIMEOUT': None,
         'IGNORE': ['.+\.hot-update.js', '.+\.map']
@@ -67,10 +73,13 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'qip.urls'
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('qip/front/public')],
+        'DIRS': [FRONTEND_DIR / 'public'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,12 +97,6 @@ WSGI_APPLICATION = 'qip.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
-dotenv.load_dotenv()
-
-if "ENV_PATH" in os.environ:
-    for env_path in os.environ["ENV_PATH"].split(":"):
-        dotenv.load_dotenv(env_path)
 
 
 DATABASES = {
@@ -153,9 +156,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
-STATICFILES_DIRS = [os.path.join('qip/front/src/assets')]
+STATICFILES_DIRS = [
+    FRONTEND_DIR / 'src' / 'assets',
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
