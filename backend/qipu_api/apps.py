@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class QipuAppConfig(AppConfig):
+class QipuApiConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'qipu_app'
+    name = 'qipu_api'

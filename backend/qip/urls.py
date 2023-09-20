@@ -18,6 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('qipu_app.urls')),
+    path('', include('qipu_api.urls')),
     path("__reload__/", include("django_browser_reload.urls")),
+    path('api-auth/', include('rest_framework.urls'))
 ]
