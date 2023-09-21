@@ -9,17 +9,20 @@
 - urls.py
 - wsgi.py
 
-### qipu_app
+### qipu api
+- pycache
 - migrations
-- **init**.py
+- __init.py__
 - admin.py
 - apps.py
 - models.py
+- serializers.py
 - tests.py
-- urls.py
-- utility.py
 - views.py
-- templates
+- utility.py
+- urls.py
+
+
 
 ### manage.py
 
@@ -50,6 +53,8 @@
 ## .gitignore
 
 ## tailwind.config.js
+
+## postcss.config.js
 
 ## package.json
 

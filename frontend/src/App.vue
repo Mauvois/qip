@@ -1,7 +1,4 @@
 
-import { RouterView } from 'vue-router';
-import { RouterLink } from 'vue-router';
-
 <template>
     <div id="nav">
         <RouterLink to="/">Home</RouterLink>
@@ -14,5 +11,23 @@ import { RouterLink } from 'vue-router';
 </template>
 
 <script>
+import { RouterView, RouterLink } from 'vue-router';
 
+export default {
+  components: {
+    RouterView,
+    RouterLink,
+  },
+  async mounted() {
+    try {
+      const response = await this.$axios.get('/endpoint');
+      console.log(response.data);
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  },
+};
 </script>
+<style scoped>
+/* You can add Tailwind classes here or custom styles if needed */
+</style>

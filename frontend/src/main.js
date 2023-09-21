@@ -1,11 +1,9 @@
-// mainapp/static/js/main.js
-const { createApp, ref } = Vue;
+import { createApp } from 'vue';
+import axios from '@/axios'; // adjust the import path according to your folder structure
+import App from '@/App.vue'; // adjust the import path according to your folder structure
+import '@/assets/tailwind.css';
 
-createApp({
-    setup() {
-        const message = ref('Hello from Vue.js!');
-        return {
-            message
-        };
-    }
-}).mount('#app');
+const app = createApp(App);
+
+app.config.globalProperties.$axios = axios;
+app.mount('#app');
