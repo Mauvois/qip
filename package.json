@@ -31,7 +31,7 @@
     ],
     "parserOptions": {
       "parser": "@babel/eslint-parser",
-      "requireConfigFile": false
+      "requireConfigFile": true
     },
     "rules": {}
   },
