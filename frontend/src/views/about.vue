@@ -1,11 +1,12 @@
 <template>
-    <div class="about">
-        <h1>About</h1>
-    </div>
+  <div class="about">
+    <h1>About</h1>
+  </div>
 </template>
 
 <script>
 export default {
+  name: 'AboutPage', 
   async mounted() {
     try {
       const response = await this.$axios.get('/endpoint');
