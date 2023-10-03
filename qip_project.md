@@ -38,8 +38,8 @@
 - styles
 	- style.css
 - views
-	- home.vue
-	- about.vue
+	- Home.vue
+	- About.vue
 - App.vue
 - router.js
 

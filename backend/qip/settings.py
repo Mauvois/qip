@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'qipu_api',
     'webpack_loader',
-    'django_browser_reload'
+    'django_browser_reload',
+    'oauth2_provider'
 ]
 
 WEBPACK_LOADER = {
@@ -102,6 +103,8 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+AUTH_USER_MODEL = 'qipu_api.User'
 
 WSGI_APPLICATION = 'qip.wsgi.application'
 

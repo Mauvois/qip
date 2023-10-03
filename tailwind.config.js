@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
   content: [
     './src/**/*.vue', // scans all .vue files in the src folder
     './public/index.html', // scans the index.html in the public folder

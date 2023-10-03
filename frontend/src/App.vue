@@ -1,13 +1,14 @@
 
 <template>
-    <div id="nav">
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-    </div>
+  <div id="nav">
+    <RouterLink to="/">Home</RouterLink>
+    <RouterLink to="/dashboard">Dashboard</RouterLink>
+    <RouterLink to="/about">About</RouterLink>
+  </div>
 
-    <div class="container">
-        <RouterView></RouterView>
-    </div>
+  <div class="container">
+    <RouterView></RouterView>
+  </div>
 </template>
 
 <script>

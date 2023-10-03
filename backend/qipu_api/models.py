@@ -1,13 +1,10 @@
 from django.db import models
-from .utility import media_file_upload
+from .utility import media_file_upload, validate_bio_length
 from datetime import datetime, timedelta
+from django.contrib.auth.models import AbstractUser
 
 future_date = models.DateTimeField(default=datetime.now() + timedelta(days=30))
 
-
-def validate_bio_length(value):
-    if len(value) < 5:  # Assuming you want a minimum of 10 characters
-        raise ValidationError('Bio must be at least 10 characters long.')
 
 # Create your models here.
 
@@ -18,7 +15,7 @@ class Unique(models.Model):
     # Vous pouvez ajouter d'autres champs au besoin.
 
 
-class User (models.Model):
+class User (AbstractUser):
     created_time = models.DateTimeField(auto_now_add=True, blank=False)
     first_name = models.CharField(max_length=30, blank=False)
     last_name = models.CharField(max_length=30, blank=False)
@@ -30,6 +27,7 @@ class User (models.Model):
         max_length=500, default='default_profile_picture.jpg')
     bio = models.CharField(max_length=250, validators=[
                            validate_bio_length], default='New user at QipU!')
+    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
 
 
 class Media (models.Model):
