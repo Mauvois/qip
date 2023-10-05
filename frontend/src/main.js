@@ -1,6 +1,7 @@
 import { createApp } from 'vue';
 import axios from '@/axios'; // Correct the import path according to your folder structure
 import App from '@/App.vue'; // Ensure the import path is correct according to your folder structure
+import '@/assets/output.css';
 import '@/assets/tailwind.css';
 import router from './router'
 import store from './store';

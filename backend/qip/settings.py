@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'qipu_api',
     'webpack_loader',
     'django_browser_reload',
@@ -73,6 +74,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'qip.urls'
@@ -103,6 +105,11 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",  # If your frontend runs on this during development
+    "https://yourfrontenddomain.com",  # If you have a production frontend domain
+]
 
 AUTH_USER_MODEL = 'qipu_api.User'
 
@@ -172,9 +179,15 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = [
     FRONTEND_DIR / 'src' / 'assets',
 ]
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'dist',
+# ]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
