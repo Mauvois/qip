@@ -9,7 +9,7 @@
 - urls.py
 - wsgi.py
 
-### qipu api
+### qipu_api
 - pycache
 - migrations
 - __init.py__
@@ -32,9 +32,8 @@
 
 ### src
 - assets
-- components
-	- BarSection.vue
 - main.js
+- axios.js
 - styles
 	- style.css
 - views
@@ -42,13 +41,16 @@
 	- About.vue
 - App.vue
 - router.js
+store.js
 
-### public
-- index.html
 
-### package.json
+### index.html
 
-### other vue.js config files
+## node_modules
+
+## staticfiles
+
+## package.json
 
 ## .gitignore
 
@@ -56,12 +58,10 @@
 
 ## postcss.config.js
 
-## package.json
-
 ## package-lock.json
 
 ## .vscode
 
-### settings.json
+## vite.config.js
 
 ## README.md

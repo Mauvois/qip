@@ -107,8 +107,8 @@ REST_FRAMEWORK = {
 }
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8080",  # If your frontend runs on this during development
-    "https://yourfrontenddomain.com",  # If you have a production frontend domain
+    "http://localhost:3000",  # If your frontend runs on this during development
+    # "https://yourfrontenddomain.com",  # If you have a production frontend domain
 ]
 
 AUTH_USER_MODEL = 'qipu_api.User'
