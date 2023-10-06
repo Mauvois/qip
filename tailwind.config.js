@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  // mode: 'jit',
+  mode: 'jit',
   content: [
-    './src/views/**/*.vue', // scans all .vue files in the src folder
+    './frontend/src/views/**/*.vue',
     './frontend/src/**/*.js',
-    './index.html'
+    './frontend/index.html'
   ],
   theme: {
     extend: {},
