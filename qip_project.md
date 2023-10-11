@@ -6,6 +6,7 @@
 - **pycache**
 - **init**.py
 - settings.py
+- asgi.py
 - urls.py
 - wsgi.py
 
@@ -32,16 +33,17 @@
 
 ### src
 - assets
+	tailwind.css
 - main.js
 - axios.js
-- styles
-	- style.css
 - views
 	- Home.vue
 	- About.vue
+	- Dashboard.vue
+	- Sidebar.vue
 - App.vue
 - router.js
-store.js
+- store.js
 
 
 ### index.html

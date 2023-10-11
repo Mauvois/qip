@@ -102,7 +102,8 @@ REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication'
     ]
 }
 
@@ -112,6 +113,8 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 AUTH_USER_MODEL = 'qipu_api.User'
+
+# LOGIN_URL = '/admin/login/'
 
 WSGI_APPLICATION = 'qip.wsgi.application'
 
