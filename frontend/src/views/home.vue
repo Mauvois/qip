@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
   name: 'HomePage',
   data() {
@@ -39,8 +41,19 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['login']),
+    
     async handleLogin() {
-      // Handle Login Logic
+      try {
+        await this.login({
+          username: this.loginUsername,
+          password: this.loginPassword
+        });
+        // Maybe redirect or show a success message
+      } catch (error) {
+        console.error("Login failed:", error);
+        // Maybe show an error message to the user
+      }
     },
     async handleSignup() {
       // Handle Signup Logic
