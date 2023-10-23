@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import dotenv
 import os
+from datetime import timedelta
+
 
 dotenv.load_dotenv()
 
@@ -46,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
     'corsheaders',
     'qipu_api',
     'webpack_loader',
@@ -67,14 +70,15 @@ WEBPACK_LOADER = {
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-    'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 ROOT_URLCONF = 'qip.urls'
@@ -101,10 +105,17 @@ TEMPLATES = [
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
-        'oauth2_provider.contrib.rest_framework.OAuth2Authentication'
-    ]
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        # 'rest_framework.authentication.TokenAuthentication',
+
+    ],
+    'DEFAULT_PERMISSION_CLASSES': (
+        # <-- ATTENTION: Changer pour la ligne du bas
+        # 'rest_framework.permissions.AllowAny',
+        'rest_framework.permissions.IsAuthenticated',
+    )
 }
 
 CORS_ALLOWED_ORIGINS = [
@@ -114,7 +125,28 @@ CORS_ALLOWED_ORIGINS = [
 
 AUTH_USER_MODEL = 'qipu_api.User'
 
-# LOGIN_URL = '/admin/login/'
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+OAUTH2_PROVIDER = {
+    "OIDC_ENABLED": True,
+    "OIDC_RSA_PRIVATE_KEY": os.environ['OIDC_RSA_PRIVATE_KEY'].replace('|||', '\n'),
+    "SCOPES": {
+        "openid": "OpenID Connect scope",
+        'read': 'Read scope',
+        'write': 'Write scope',
+        # ... any other scopes that you use
+    },
+    # ... any other settings you want
+}
+
+OAUTH_SERVER_URL = 'http://127.0.0.1:8000/token'
+
+LOGIN_URL = '/admin/login/'
+
+OAUTH2_PROVIDER_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
+OAUTH2_PROVIDER_REFRESH_TOKEN_EXPIRES = timedelta(days=60)
 
 WSGI_APPLICATION = 'qip.wsgi.application'
 

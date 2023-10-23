@@ -3,8 +3,6 @@ from .utility import media_file_upload, validate_bio_length
 from datetime import datetime, timedelta
 from django.contrib.auth.models import AbstractUser
 
-future_date = models.DateTimeField(default=datetime.now() + timedelta(days=30))
-
 
 # Create your models here.
 
@@ -21,8 +19,6 @@ class User (AbstractUser):
     last_name = models.CharField(max_length=30, blank=False)
     username = models.CharField(max_length=30, unique=True, blank=False)
     email = models.EmailField(unique=True, blank=False)
-    # il faut hasher le password avec bcrypt, Argon2 ou scrypt
-    password = models.CharField(max_length=1000, blank=False)
     picture = models.CharField(
         max_length=500, default='default_profile_picture.jpg')
     bio = models.CharField(max_length=250, validators=[
@@ -99,19 +95,3 @@ class Attendee (models.Model):
     )
     status = models.CharField(
         max_length=50, choices=STATUS_CHOICES, blank=False, default='pending')
-
-
-class Reference(models.Model):
-    # Champs de clé étrangère pour référencer les autres tables
-    user = models.ForeignKey(
-        User, on_delete=models.CASCADE, null=True, blank=True)
-    media = models.ForeignKey(
-        Media, on_delete=models.CASCADE, null=True, blank=True)
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, null=True, blank=True)
-    event = models.ForeignKey(
-        Event, on_delete=models.CASCADE, null=True, blank=True)
-    contact = models.ForeignKey(
-        Contacter, on_delete=models.CASCADE, null=True, blank=True)
-    attendee = models.ForeignKey(
-        Attendee, on_delete=models.CASCADE, null=True, blank=True)
