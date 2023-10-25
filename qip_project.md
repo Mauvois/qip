@@ -17,6 +17,7 @@
 - admin.py
 - apps.py
 - models.py
+- permissions.py
 - serializers.py
 - tests.py
 - views.py

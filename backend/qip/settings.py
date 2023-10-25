@@ -107,6 +107,8 @@ REST_FRAMEWORK = {
     ),
 }
 
+CORS_ALLOW_ALL_ORIGINS = False
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # If your frontend runs on this during development
     # "https://yourfrontenddomain.com",  # If you have a production frontend domain

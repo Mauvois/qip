@@ -19,14 +19,14 @@ export default {
     RouterView,
     RouterLink,
   },
-  async mounted() {
-    try {
-      const response = await this.$axios.get('/endpoint');
-      console.log(response.data);
-    } catch (error) {
-      console.error('There was an error!', error);
-    }
-  },
+  // async mounted() {
+  //   try {
+  //     const response = await this.$axios.get('/endpoint');
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error('There was an error!', error);
+  //   }
+  // },
 };
 </script>
 <style scoped>
