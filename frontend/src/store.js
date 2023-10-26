@@ -27,7 +27,7 @@ export default createStore({
     async login({ commit }, credentials) {
       try {
         const response = await axios.post(
-          `${process.env.VUE_APP_BACKEND_URL}your-login-endpoint/`,
+          `${import.meta.env.VITE_APP_BACKEND_URL}login/`,
           credentials
         );
         commit('setUser', response.data.user);
@@ -40,7 +40,7 @@ export default createStore({
     async signup({ dispatch }, credentials) {  // New signup action
       try {
         await axios.post(
-          `${process.env.VUE_APP_BACKEND_URL}your-signup-endpoint/`,
+          `${import.meta.env.VITE_APP_BACKEND_URL}signup/`,
           credentials
         );
         // Login after successful signup

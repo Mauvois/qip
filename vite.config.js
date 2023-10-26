@@ -1,6 +1,10 @@
 import { defineConfig } from 'vite'
+import dotenv from 'dotenv';
 import vue from '@vitejs/plugin-vue'
 import path from 'path'  // ES module syntax
+
+
+dotenv.config({ path: './backend/.env' });
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -27,5 +31,8 @@ export default defineConfig({
     },
     build: {
         outDir: '../dist' // if you want build files to be outside of frontend directory
+    },
+    define: {
+        'process.env.VUE_APP_BACKEND_URL': JSON.stringify(process.env.VUE_APP_BACKEND_URL),
     }
 })

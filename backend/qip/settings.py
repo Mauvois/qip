@@ -114,6 +114,9 @@ CORS_ALLOWED_ORIGINS = [
     # "https://yourfrontenddomain.com",  # If you have a production frontend domain
 ]
 
+VUE_APP_BACKEND_URL = 'http://127.0.0.1:8000/'
+
+
 AUTH_USER_MODEL = 'qipu_api.User'
 
 AUTHENTICATION_BACKENDS = [
@@ -185,6 +188,22 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+JWT_AUTH = {
+    'JWT_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_payload_handler',
+
+    'JWT_ENCODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_encode_handler',
+
+    'JWT_DECODE_HANDLER':
+    'rest_framework_jwt.utils.jwt_decode_handler',
+
+    'JWT_PAYLOAD_GET_USER_ID_HANDLER':
+    'rest_framework_jwt.utils.jwt_get_user_id_from_payload_handler',
+
+    'JWT_RESPONSE_PAYLOAD_HANDLER':
+    'rest_framework_jwt.utils.jwt_response_payload_handler'
+}
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
