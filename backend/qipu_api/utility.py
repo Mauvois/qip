@@ -1,6 +1,5 @@
 import os
 import uuid
-from rest_framework_jwt.utils import jwt_payload_handler
 from django.http import HttpResponse
 
 # code proposé par ChatGPT3.5 tel quel
@@ -17,13 +16,6 @@ def media_file_upload(instance, filename):
 def validate_bio_length(value):
     if len(value) < 5:
         raise ValidationError('Bio must be at least 10 characters long.')
-
-
-def custom_jwt_payload_handler(user):
-    payload = jwt_payload_handler(user)
-    # Add custom claims here, e.g.:
-    # payload['custom_claim'] = 'custom_value'
-    return payload
 
 
 def set_token_cookie(response: HttpResponse, token: str) -> None:

@@ -3,7 +3,7 @@ from rest_framework import viewsets
 import requests
 from django.shortcuts import render
 from rest_framework.views import APIView
-from rest_framework_jwt.settings import api_settings
+from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -46,13 +46,9 @@ class SignupView(APIView):
         user = User.objects.create_user(
             username=username, email=email, password=password, first_name=first_name, last_name=last_name)
 
-        # You can add more fields if needed
-
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-        payload = jwt_payload_handler(user)
-        token = jwt_encode_handler(payload)
+        # Generate token using simplejwt
+        refresh = RefreshToken.for_user(user)
+        token = str(refresh.access_token)
 
         return Response({'token': token, 'user': UserSerializer(user).data}, status=status.HTTP_201_CREATED)
 
@@ -68,14 +64,13 @@ class LoginView(APIView):
         if user is None:
             raise ValidationError({'error': 'Invalid Credentials'})
 
-        jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-        jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-        payload = jwt_payload_handler(user)
-        token = jwt_encode_handler(payload)
+        # Generate token using simplejwt
+        refresh = RefreshToken.for_user(user)
+        token = str(refresh.access_token)
 
         # Create a basic JSON response first
-        response = JsonResponse({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+        response = JsonResponse(
+            {'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
 
         # Set the JWT token as a httpOnly cookie on the response
         set_token_cookie(response, token)

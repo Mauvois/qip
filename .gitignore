@@ -159,8 +159,8 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-127.0.0.1.key
-127.0.0.1.crt
+backend/127.0.0.1.key
+backend/127.0.0.1.crt
 
 localhost.crt
 localhost.key
