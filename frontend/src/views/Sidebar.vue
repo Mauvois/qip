@@ -30,6 +30,9 @@
                     <!-- Filter options here -->
                 </div>
             </div>
+            <div class="mb-6">
+                <p class="text-white text-lg" v-if="user">{{ user.name }}</p> 
+            </div>
 
             <div class="absolute bottom-6 left-6 right-6 flex justify-between">
                 <div>
@@ -53,6 +56,7 @@
 </template>
   
 <script>
+import { mapState } from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -67,17 +71,18 @@ export default {
     components: {
         FontAwesomeIcon
     },
-    data() {
+    data()
+    {
         return {
             isCollapsed: false, // Sidebar state
             showMenu: false,  // Hamburger menu state
         };
     },
     computed: {
+        ...mapState(['user']),  // Map the user state from Vuex store to this component
         toggleIcon() {
             return this.isCollapsed ? faArrowRight : faArrowLeft;
         }
-
     },
     methods: {
         toggleSidebar() {
@@ -87,8 +92,6 @@ export default {
             this.showMenu = !this.showMenu;
         }
     },
-
-    // Any data, computed properties, methods, etc. needed for the sidebar
 };
 </script>
 

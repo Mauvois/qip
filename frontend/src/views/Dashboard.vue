@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from '../axios.js';
+import axios from '@/axios.js';
 import Sidebar from './Sidebar.vue';
 
 export default {

@@ -14,8 +14,16 @@
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
           <input type="password" v-model="loginPassword" placeholder="Password"
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
-          <button type="submit"
-            class="w-full py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600">Login</button>
+
+          <!-- Error message display here -->
+          <p class="text-green-500" v-if="successMessage">{{ successMessage }}</p>
+          <p class="text-red-500" v-if="errorMessage">{{ errorMessage }}</p>
+
+          <button type="submit" :disabled="isLoading"
+            class="w-full py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600">
+            <span v-if="!isLoading">Login</span>
+            <span v-if="isLoading">Logging in...</span>
+          </button>
         </form>
 
         <form v-if="activeTab === 'signup'" @submit.prevent="handleSignup" class="space-y-4">
@@ -25,6 +33,11 @@
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
           <input type="password" v-model="signupPasswordConfirmation" placeholder="Confirm Password"
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
+
+          <!-- Error message display here -->
+          <p class="text-green-500" v-if="successMessage">{{ successMessage }}</p>
+          <p class="text-red-500" v-if="errorMessage">{{ errorMessage }}</p>
+
           <button type="submit"
             class="w-full py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600">Sign Up</button>
         </form>
@@ -42,6 +55,7 @@
 <script>
 import { mapActions } from 'vuex';
 
+
 export default {
   name: 'HomePage',
   data() {
@@ -51,26 +65,55 @@ export default {
       loginPassword: '',
       signupUsername: '',
       signupPassword: '',
+      errorMessage: '',
+      successMessage: '',
+      isLoading: false
     };
   },
   methods: {
     ...mapActions(['login', 'signup']),
 
     async handleLogin() {
+      this.isLoading = true; // Set loading state to true at the start
+
+      if (!this.loginUsername.trim() || !this.loginPassword.trim()) {
+        this.errorMessage = "Both fields are required!";
+        this.isLoading = false; // Immediately set loading state to false if validation fails
+        return;
+      }
+
       try {
         await this.login({
           username: this.loginUsername,
           password: this.loginPassword
         });
-        // Maybe redirect or show a success message
+        // On successful login
+        this.successMessage = 'Logged in successfully!';
+        this.$router.push('/dashboard');
       } catch (error) {
         console.error("Login failed:", error);
-        // Maybe show an error message to the user
+        // On login failure
+        this.errorMessage = 'Invalid credentials';
+      } finally {
+        this.isLoading = false; // Set loading state to false at the end, regardless of success or failure
       }
     },
     async handleSignup() {
-      // Handle Signup Logic
+      if (!this.signupUsername.trim() || !this.signupPassword.trim() || !this.signupPasswordConfirmation.trim()) {
+        this.errorMessage = "All fields are required!";
+        return;
+      }
+
+      const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+      if (!emailRegex.test(this.signupUsername)) {
+        this.errorMessage = "Invalid email format!";
+        return;
+      }
+      if (this.signupPassword !== this.signupPasswordConfirmation) {
+        this.errorMessage = "Passwords do not match!";
+        return;
+      }
     },
   },
 };
-</script>
+</script> 

@@ -26,7 +26,7 @@ export default defineConfig({
     },
     server: {
         proxy: {
-            '/api': 'http://localhost:8000',  // assuming your Django API endpoints start with "/api"
+            '/api': 'https://localhost:8000',  // assuming your Django API endpoints start with "/api"
         },
     },
     build: {

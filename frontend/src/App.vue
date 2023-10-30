@@ -1,11 +1,5 @@
 
 <template>
-  <!-- <div id="nav">
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/dashboard">Dashboard</RouterLink>
-    <RouterLink to="/about">About</RouterLink>
-  </div> -->
-
   <div class="container">
     <RouterView></RouterView>
   </div>
@@ -13,20 +7,13 @@
 
 <script>
 import { RouterView, RouterLink } from 'vue-router';
+import axios from '@/axios.js';
 
 export default {
   components: {
     RouterView,
     RouterLink,
   },
-  // async mounted() {
-  //   try {
-  //     const response = await this.$axios.get('/endpoint');
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error('There was an error!', error);
-  //   }
-  // },
 };
 </script>
 <style scoped>

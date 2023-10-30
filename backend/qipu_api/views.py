@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
+from django.http import JsonResponse  # You might need this
+from .utility import set_token_cookie
 from .permissions import IsOwner, IsOwnerOrInvolved
 # Note the changes here
 from .models import User, Media, Post, Event, Contact, Attendee, Unique, RelationshipLabel, Tag, UserTag
@@ -72,7 +74,13 @@ class LoginView(APIView):
         payload = jwt_payload_handler(user)
         token = jwt_encode_handler(payload)
 
-        return Response({'token': token, 'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+        # Create a basic JSON response first
+        response = JsonResponse({'user': UserSerializer(user).data}, status=status.HTTP_200_OK)
+
+        # Set the JWT token as a httpOnly cookie on the response
+        set_token_cookie(response, token)
+
+        return response
 
 
 class UserViewSet(PermissionMixin, ModelViewSet):
@@ -87,7 +95,9 @@ class MediaViewSet(PermissionMixin, ModelViewSet):
 
 class PostViewSet(PermissionMixin, ModelViewSet):
     queryset = Post.objects.all()
+    print(queryset)
     serializer_class = PostSerializer
+    print(serializer_class)
 
 
 class EventViewSet(PermissionMixin, ModelViewSet):

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
     'rest_framework',
     'corsheaders',
     'qipu_api',
@@ -70,6 +71,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'qipu_api.utility.TokenFromCookieMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -80,6 +82,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'qip.urls'
+
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -110,11 +116,13 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = False
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # If your frontend runs on this during development
+    "http://localhost:3000"  # If your frontend runs on this during development
     # "https://yourfrontenddomain.com",  # If you have a production frontend domain
 ]
 
-VUE_APP_BACKEND_URL = 'http://127.0.0.1:8000/'
+CORS_ALLOW_CREDENTIALS = True
+
+VUE_APP_BACKEND_URL = 'https://127.0.0.1:8000/'
 
 
 AUTH_USER_MODEL = 'qipu_api.User'
