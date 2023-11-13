@@ -49,17 +49,29 @@ export default {
 <style scoped>
 .dashboard {
     display: flex;
+    height: 100%; /* Ensure it takes full height of its container */
 }
 
 .content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    height: 100%; /* Ensure it expands to the full height */
 }
 
 .timelines {
     display: flex;
-    gap: 20px; /* Adjust the space between timelines */
+    gap: 20px;
+    justify-content: space-around;
+    align-items: stretch;
+    flex-grow: 1; /* Added to take up available space */
+}
+
+.timelines>* {
+    flex: 1;
+    /* Assigns equal flex-grow value to each timeline */
+    min-width: 0;
+    /* Prevents overflow issues in some browsers */
 }
 
 /* Responsive adjustments if necessary */
@@ -67,5 +79,4 @@ export default {
     .timelines {
         flex-direction: column;
     }
-}
-</style>
+}</style>
