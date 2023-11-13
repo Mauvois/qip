@@ -1,16 +1,14 @@
 <template>
-    <div class="dashboard flex">
+    <div class="dashboard">
         <Sidebar />
-        <div class="flex-1">
-            <h1>Dashboard</h1>
-            <!-- List the fetched posts -->
-            <ul v-if="posts.length">
-                <li v-for="post in posts" :key="post.id">
-                    <strong>{{ post.user.username }}:</strong> {{ post.content }}
-                    <br>
-                    <small>Posted on: {{ new Date(post.created_time).toLocaleString() }}</small>
-                </li>
-            </ul>
+        <div class="content">
+            <!-- <h1>Dashboard</h1> -->
+            <div v-if="posts.length" class="timelines">
+                <Timeline :posts="posts" timescale="hour" />
+                <Timeline :posts="posts" timescale="day" />
+                <Timeline :posts="posts" timescale="week" />
+                <Timeline :posts="posts" timescale="month" />
+            </div>
             <p v-else>No posts available</p>
         </div>
     </div>
@@ -19,11 +17,13 @@
 <script>
 import axios from '@/axios.js';
 import Sidebar from './Sidebar.vue';
+import Timeline from './Timeline.vue';
 
 export default {
     name: 'AppDashboard',
     components: {
-        Sidebar
+        Sidebar,
+        Timeline
     },
     data() {
         return {
@@ -43,10 +43,29 @@ export default {
             }
         }
     }
-    // Any data, computed properties, methods, etc. needed for the dashboard
 };
 </script>
 
 <style scoped>
-/* Styles specific to the Dashboard component */
+.dashboard {
+    display: flex;
+}
+
+.content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.timelines {
+    display: flex;
+    gap: 20px; /* Adjust the space between timelines */
+}
+
+/* Responsive adjustments if necessary */
+@media (max-width: 600px) {
+    .timelines {
+        flex-direction: column;
+    }
+}
 </style>
