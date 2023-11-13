@@ -1,7 +1,6 @@
 import { createStore } from 'vuex';
 import axios from '@/axios.js';
 
-
 export default createStore({
   state: {
     user: null
@@ -25,21 +24,29 @@ export default createStore({
         throw error;
       }
     },
-    async signup({ dispatch }, credentials) {
+    async signup({ commit, dispatch }, credentials) {
       try {
+        // The POST request to the signup endpoint
         await axios.post(
           `${import.meta.env.VITE_APP_BACKEND_URL}signup/`,
-          credentials
+          {
+            username: credentials.username,
+            email: credentials.email,
+            password: credentials.password,
+            first_name: credentials.first_name,
+            last_name: credentials.last_name
+          }
         );
-        // Login after successful signup
-        await dispatch('login', credentials);
+        // Dispatch the login action with the username and password
+        await dispatch('login', {
+          username: credentials.username,
+          password: credentials.password
+        });
+        // Redirection will be handled in Home.vue after this action completes
       } catch (error) {
         console.error('An error occurred during signup:', error);
         throw error;
       }
     },
-    logout({ commit }) {
-      commit('setUser', null);
-    }
   }
 });

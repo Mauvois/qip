@@ -1,11 +1,22 @@
 <template>
   <div class="home flex flex-col items-center justify-center min-h-screen bg-gray-100">
-    <section class="auth-section bg-white p-8 rounded-md shadow-md" style="max-width: 400px; width: 100%;">
+    <section class="auth-section bg-white p-8 rounded-md" style="max-width: 400px; width: 100%;">
       <div class="tabs flex mb-4">
-        <button @click="activeTab = 'login'" :class="{ 'bg-blue-500': activeTab === 'login' }"
-          class="flex-1 py-2 px-4 text-white rounded-l-md focus:outline-none hover:bg-blue-600">Login</button>
-        <button @click="activeTab = 'signup'" :class="{ 'bg-blue-500': activeTab === 'signup' }"
-          class="flex-1 py-2 px-4 text-white rounded-r-md focus:outline-none hover:bg-blue-600">Sign Up</button>
+        <button @click="activeTab = 'login'"
+          :class="{ 'text-white': activeTab === 'login', 'text-gray-500': activeTab !== 'login' }"
+          class="flex-1 py-2 px-4 rounded-l-md focus:outline-none"
+          :style="{ backgroundColor: activeTab === 'login' ? '#2C2C2C' : '', borderColor: activeTab === 'login' ? '#2C2C2C' : '#e2e8f0' }"
+          @mouseover="this.style.backgroundColor = '#3D3D3D'"
+          @mouseleave="this.style.backgroundColor = activeTab === 'login' ? '#2C2C2C' : ''">Login</button>
+
+        <button @click="activeTab = 'signup'"
+          :class="{ 'text-white': activeTab === 'signup', 'text-gray-500': activeTab !== 'signup' }"
+          class="flex-1 py-2 px-4 rounded-r-md focus:outline-none"
+          :style="{ backgroundColor: activeTab === 'signup' ? '#2C2C2C' : '', borderColor: activeTab === 'signup' ? '#2C2C2C' : '#e2e8f0' }"
+          @mouseover="this.style.backgroundColor = '#3D3D3D'"
+          @mouseleave="this.style.backgroundColor = activeTab === 'signup' ? '#2C2C2C' : ''">Sign Up</button>
+
+
       </div>
 
       <div class="flex flex-col space-y-4">
@@ -19,34 +30,49 @@
           <p class="text-green-500" v-if="successMessage">{{ successMessage }}</p>
           <p class="text-red-500" v-if="errorMessage">{{ errorMessage }}</p>
 
-          <button type="submit" :disabled="isLoading"
-            class="w-full py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600">
-            <span v-if="!isLoading">Login</span>
-            <span v-if="isLoading">Logging in...</span>
+          <button type="submit" class="w-full py-2 text-white rounded-md focus:outline-none bg-gray-500 hover:bg-gray-600"
+            :class="{ 'bg-gray-500': activeTab === 'login', 'text-gray-500': activeTab !== 'login' }"
+            @mouseover="activeTab === 'login' && (this.style.backgroundColor = '#6B7280')"
+            @mouseleave="activeTab === 'login' && (this.style.backgroundColor = '#4B5563')"
+            :disabled="activeTab !== 'login'">
+            Login
           </button>
         </form>
 
         <form v-if="activeTab === 'signup'" @submit.prevent="handleSignup" class="space-y-4">
           <input v-model="signupUsername" placeholder="Username"
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
+          <input v-model="signupFirstName" placeholder="First Name"
+            class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
+          <input v-model="signupLastName" placeholder="Last Name"
+            class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
+          <input v-model="signupEmail" type="email" placeholder="Email"
+            class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
           <input type="password" v-model="signupPassword" placeholder="Password"
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
           <input type="password" v-model="signupPasswordConfirmation" placeholder="Confirm Password"
             class="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500" />
 
+
+
           <!-- Error message display here -->
           <p class="text-green-500" v-if="successMessage">{{ successMessage }}</p>
           <p class="text-red-500" v-if="errorMessage">{{ errorMessage }}</p>
+          <button type="submit" class="w-full py-2 text-white rounded-md focus:outline-none bg-gray-500 hover:bg-gray-600"
+            :class="{ 'bg-gray-500': activeTab === 'signup', 'text-gray-500': activeTab !== 'signup' }"
+            @mouseover="activeTab === 'signup' && (this.style.backgroundColor = '#6B7280')"
+            @mouseleave="activeTab === 'signup' && (this.style.backgroundColor = '#4B5563')"
+            :disabled="activeTab !== 'signup'">
+            Sign Up
+          </button>
 
-          <button type="submit"
-            class="w-full py-2 bg-blue-500 text-white rounded-md focus:outline-none hover:bg-blue-600">Sign Up</button>
         </form>
       </div>
     </section>
 
     <section class="info-section mt-12 text-center">
-      <h1 class="text-3xl font-semibold mb-4">Welcome to Our Project!</h1>
-      <p class="text-gray-700">Here you can find information about what we do and the benefits of our project...</p>
+      <h1 class="text-3xl font-semibold mb-4">qip</h1>
+      <p class="text-gray-700">We are time</p>
     </section>
   </div>
 </template>
@@ -64,6 +90,9 @@ export default {
       loginUsername: '',
       loginPassword: '',
       signupUsername: '',
+      signupFirstName: '',
+      signupEmail: '',
+      signupLastName: '',
       signupPassword: '',
       errorMessage: '',
       successMessage: '',
@@ -99,19 +128,41 @@ export default {
       }
     },
     async handleSignup() {
-      if (!this.signupUsername.trim() || !this.signupPassword.trim() || !this.signupPasswordConfirmation.trim()) {
+      this.errorMessage = '';
+      this.successMessage = '';
+      // Check if all fields are filled in
+      if (!this.signupFirstName.trim() || !this.signupLastName.trim() || !this.signupUsername.trim() || !this.signupEmail.trim() || !this.signupPassword.trim() || !this.signupPasswordConfirmation.trim()) {
         this.errorMessage = "All fields are required!";
         return;
       }
 
-      const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
-      if (!emailRegex.test(this.signupUsername)) {
+      const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,7}$/;
+      if (!emailRegex.test(this.signupEmail)) {
         this.errorMessage = "Invalid email format!";
         return;
       }
       if (this.signupPassword !== this.signupPasswordConfirmation) {
         this.errorMessage = "Passwords do not match!";
         return;
+      }
+
+      try {
+        // Sign up the user
+        await this.signup({
+          first_name: this.signupFirstName,
+          last_name: this.signupLastName,
+          username: this.signupUsername,
+          email: this.signupEmail,
+          password: this.signupPassword
+        });
+
+        // If signup was successful, the login action should have been dispatched and the user logged in.
+        // Redirect to dashboard
+        this.successMessage = 'Signed up successfully!';
+        this.$router.push('/dashboard');
+      } catch (error) {
+        console.error("Signup failed:", error);
+        this.errorMessage = 'Signup failed. Please try again.';
       }
     },
   },
