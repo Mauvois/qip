@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'qipu_api',
     'webpack_loader',
-    'django_browser_reload'
+    'django_browser_reload',
+    'channels'
 ]
 
 WEBPACK_LOADER = {
@@ -149,6 +150,16 @@ LOGIN_URL = '/admin/login/'
 
 WSGI_APPLICATION = 'qip.wsgi.application'
 
+ASGI_APPLICATION = 'qip.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],  # Configure Redis server
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
