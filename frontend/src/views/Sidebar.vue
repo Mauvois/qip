@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="mb-6">
-                <p class="text-white text-lg" v-if="user">{{ user.name }}</p> 
+                <p class="text-white text-lg" v-if="user">{{ user.username }}</p>
             </div>
 
             <div class="absolute bottom-6 left-6 right-6 flex justify-between">
@@ -43,6 +43,7 @@
                         <a href="#">Settings</a>
                         <a href="#">Profile</a>
                         <a href="#">About</a>
+                        <a href="#" @click="logout">Logout</a>
                     </div>
                 </div>
                 <div>
@@ -60,6 +61,7 @@ import { mapState } from 'vuex';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faBars, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import axios from '@/axios.js';
 
 
 
@@ -71,8 +73,7 @@ export default {
     components: {
         FontAwesomeIcon
     },
-    data()
-    {
+    data() {
         return {
             isCollapsed: false, // Sidebar state
             showMenu: false,  // Hamburger menu state
@@ -90,6 +91,20 @@ export default {
         },
         toggleMenu() {
             this.showMenu = !this.showMenu;
+        },
+        async logout() {
+            try {
+                // Make a request to the logout endpoint
+                await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}logout/`);
+
+                // Update Vuex state if needed
+                this.$store.commit('setUser', null);
+
+                // Redirect to login or home page
+                this.$router.push('/');
+            } catch (error) {
+                console.error('An error occurred during logout:', error);
+            }
         }
     },
 };

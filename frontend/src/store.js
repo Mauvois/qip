@@ -8,9 +8,22 @@ export default createStore({
   mutations: {
     setUser(state, user) {
       state.user = user;
+    },
+    clearUser(state) {
+      state.user = null;
     }
   },
   actions: {
+    async initializeAuthenticationState({ commit }) {
+      try {
+        // Replace with your API endpoint that checks the user session
+        const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}check_session/`, { withCredentials: true });
+        commit('setUser', response.data.user);
+      } catch (error) {
+        console.error('Error during session check:', error);
+        commit('clearUser');
+      }
+    },
     async login({ commit }, credentials) {
       try {
         const response = await axios.post(
@@ -46,6 +59,15 @@ export default createStore({
       } catch (error) {
         console.error('An error occurred during signup:', error);
         throw error;
+      }
+    },
+    async logout({ commit }) {
+      try {
+        // Replace with your API endpoint to log out
+        await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}logout/`, {}, { withCredentials: true });
+        commit('clearUser');
+      } catch (error) {
+        console.error('An error occurred during logout:', error);
       }
     },
   }

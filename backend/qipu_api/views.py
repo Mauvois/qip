@@ -8,8 +8,10 @@ from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.exceptions import ValidationError
 from rest_framework import status
-from django.http import JsonResponse  # You might need this
+from django.http import JsonResponse
+from django.http import HttpResponse
 from .utility import set_token_cookie
 from .permissions import IsOwner, IsOwnerOrInvolved
 # Note the changes here
@@ -77,6 +79,27 @@ class LoginView(APIView):
 
         return response
 
+
+class LogoutView(APIView):
+    # Only authenticated users can log out
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        response = HttpResponse("Logged out", status=status.HTTP_200_OK)
+
+        response.delete_cookie('authToken')
+        return response
+
+
+class CheckSessionView(APIView):
+    permission_classes = [IsAuthenticated]  # Ensure only authenticated requests are allowed
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        if user.is_authenticated:
+            return Response({'user': UserSerializer(user).data})
+        else:
+            raise ValidationError({'error': 'Not Authenticated'})
 
 class UserViewSet(PermissionMixin, ModelViewSet):
     queryset = User.objects.all()

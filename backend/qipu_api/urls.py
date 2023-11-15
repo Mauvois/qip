@@ -4,7 +4,7 @@ from .views import (
     UserViewSet, MediaViewSet, PostViewSet, EventViewSet,
     ContactViewSet, AttendeeViewSet, UniqueViewSet,
     RelationshipLabelViewSet, TagViewSet, UserTagViewSet,
-    SignupView, LoginView  # Import the views
+    SignupView, LoginView, LogoutView, CheckSessionView  # Import the views
 )
 
 # Routers provide an easy way of automatically determining the URL conf.
@@ -22,7 +22,10 @@ router.register(r'tags', TagViewSet)
 router.register(r'user_tags', UserTagViewSet)
 
 urlpatterns = [
-    path('signup/', SignupView.as_view(), name='signup'),  # New Signup URL
-    path('login/', LoginView.as_view(), name='login'),  # New Login URL
+    path('signup/', SignupView.as_view(), name='signup'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('', include(router.urls)),
+    path('check_session/', CheckSessionView.as_view(), name='check_session'),
+
 ]

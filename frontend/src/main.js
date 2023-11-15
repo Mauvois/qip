@@ -12,6 +12,8 @@ const app = createApp(App);
 app.use(router); // Use the router
 app.use(store);
 
+store.dispatch('initializeAuthenticationState');
+
 app.config.globalProperties.$axios = axios; // Set axios
 
 app.mount('#app'); // Mount the app once
