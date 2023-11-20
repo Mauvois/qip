@@ -3,7 +3,9 @@ import axios from '@/axios.js';
 
 export default createStore({
   state: {
-    user: null
+    user: null,
+    isSettingsVisible: false,
+    isProfileVisible: false,
   },
   mutations: {
     setUser(state, user) {
@@ -11,12 +13,17 @@ export default createStore({
     },
     clearUser(state) {
       state.user = null;
+    },
+    toggleSettingsVisibility(state) { // New mutation to toggle the visibility of settings
+      state.isSettingsVisible = !state.isSettingsVisible;
+    },
+    toggleProfileVisibility(state) {
+      state.isProfileVisible = !state.isProfileVisible;
     }
   },
   actions: {
     async initializeAuthenticationState({ commit }) {
       try {
-        // Replace with your API endpoint that checks the user session
         const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_URL}check_session/`, { withCredentials: true });
         commit('setUser', response.data.user);
       } catch (error) {
@@ -29,7 +36,7 @@ export default createStore({
         const response = await axios.post(
           `${import.meta.env.VITE_APP_BACKEND_URL}login/`,
           credentials,
-          { withCredentials: true }  // Make sure cookies are sent and received
+          { withCredentials: true }
         );
         commit('setUser', response.data.user);
       } catch (error) {
@@ -39,7 +46,6 @@ export default createStore({
     },
     async signup({ commit, dispatch }, credentials) {
       try {
-        // The POST request to the signup endpoint
         await axios.post(
           `${import.meta.env.VITE_APP_BACKEND_URL}signup/`,
           {
@@ -50,12 +56,10 @@ export default createStore({
             last_name: credentials.last_name
           }
         );
-        // Dispatch the login action with the username and password
         await dispatch('login', {
           username: credentials.username,
           password: credentials.password
         });
-        // Redirection will be handled in Home.vue after this action completes
       } catch (error) {
         console.error('An error occurred during signup:', error);
         throw error;
@@ -63,12 +67,12 @@ export default createStore({
     },
     async logout({ commit }) {
       try {
-        // Replace with your API endpoint to log out
         await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}logout/`, {}, { withCredentials: true });
         commit('clearUser');
       } catch (error) {
         console.error('An error occurred during logout:', error);
       }
     },
+    // No changes needed in existing actions
   }
 });

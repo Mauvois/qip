@@ -74,12 +74,12 @@ MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'qipu_api.utility.TokenFromCookieMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'qipu_api.utility.RedirectAuthenticatedUserMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "django_browser_reload.middleware.BrowserReloadMiddleware",
-
 ]
 
 ROOT_URLCONF = 'qip.urls'

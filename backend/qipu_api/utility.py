@@ -1,6 +1,8 @@
 import os
 import uuid
 from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 
 # code proposé par ChatGPT3.5 tel quel
 
@@ -51,3 +53,18 @@ class TokenFromCookieMiddleware:
         response = self.get_response(request)
         print(response)
         return response
+
+
+class RedirectAuthenticatedUserMiddleware:
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+        return response
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        if request.user.is_authenticated:
+            if request.path in [reverse('login'), reverse('signup')]:
+                return redirect('Dashboard')
+        return None

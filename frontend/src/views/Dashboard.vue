@@ -1,8 +1,8 @@
 <template>
     <div class="dashboard">
-        <Sidebar />
+        <Sidebar @show-settings="handleShowSettings" />
         <div class="content">
-            <!-- <h1>Dashboard</h1> -->
+            <!-- Content -->
             <div v-if="posts.length" class="timelines">
                 <Timeline :posts="posts" timescale="hour" />
                 <Timeline :posts="posts" timescale="day" />
@@ -13,6 +13,8 @@
             </div>
             <p v-else>No posts available</p>
         </div>
+        <Settings v-if="isSettingsVisible" />
+        <Profile v-if="isProfileVisible" />
     </div>
 </template>
 
@@ -20,12 +22,16 @@
 import axios from '@/axios.js';
 import Sidebar from './Sidebar.vue';
 import Timeline from './Timeline.vue';
+import Settings from './Settings.vue';
+import Profile from './Profile.vue';
 
 export default {
     name: 'AppDashboard',
     components: {
         Sidebar,
-        Timeline
+        Timeline,
+        Settings,
+        Profile
     },
     data() {
         return {
@@ -33,16 +39,22 @@ export default {
             socket: null,
         };
     },
+    computed: {
+        isSettingsVisible() {
+            return this.$store.state.isSettingsVisible;
+        },
+        isProfileVisible() {
+            return this.$store.state.isProfileVisible;
+        }
+    },
     mounted() {
         this.connectWebSocket();
+        this.fetchPosts();
     },
     beforeDestroy() {
         if (this.socket) {
             this.socket.close();
         }
-    },
-    mounted() {
-        this.fetchPosts();
     },
     methods: {
         connectWebSocket() {
@@ -50,7 +62,6 @@ export default {
             this.socket.onmessage = (event) => {
                 let data = JSON.parse(event.data);
                 this.posts = data.message;
-                // update your posts or handle the message
             };
             this.socket.onclose = function (e) {
                 console.error('Chat socket closed unexpectedly');
@@ -63,6 +74,10 @@ export default {
             } catch (error) {
                 console.error('Failed to fetch posts:', error);
             }
+        },
+        handleShowSettings() {
+            this.$store.commit('toggleSettingsVisibility');
+            console.log('Settings button clicked!');
         }
     }
 };
@@ -92,7 +107,6 @@ export default {
     width: 100%;
     /* Ensure full width */
 
-    /* Added styles */
     >* {
         flex: 1;
         /* Give equal width to all child elements */
@@ -109,7 +123,6 @@ export default {
     /* Light grey for even timelines */
 }
 
-/* Responsive adjustments if necessary */
 @media (max-width: 600px) {
     .timelines {
         flex-direction: column;

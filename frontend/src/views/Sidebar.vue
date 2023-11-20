@@ -11,21 +11,14 @@
             </div>
 
             <div class="mb-2">
-                <h2 class="text-white mb-2">Options</h2>
+                <h2 class="text-white mb-2">Tags</h2>
                 <div class="options-list overflow-y-auto mb-6">
                     <!-- Options items here -->
                 </div>
             </div>
 
             <div class="mb-6 calendars">
-                <h2 class="text-white mb-6">Calendars</h2>
-                <div class="bg-white rounded-md p-4 space-y-1">
-                    <!-- Calendar lines here, up to 10 lines -->
-                </div>
-            </div>
-
-            <div class="mb-6 calendars">
-                <h2 class="text-white mb-6">Filter Options</h2>
+                <h2 class="text-white mb-6">◎</h2>
                 <div class="filters-list overflow-y-auto mb-6">
                     <!-- Filter options here -->
                 </div>
@@ -40,9 +33,9 @@
                         <font-awesome-icon :icon="['fas', 'bars']" class="text-black" />
                     </button>
                     <div v-if="showMenu" class="menu-dropdown">
-                        <a href="#">Settings</a>
-                        <a href="#">Profile</a>
-                        <a href="#">About</a>
+                        <a href="#" @click="showSettings">Settings</a>
+                        <a href="#" @click="showProfile">Profile</a>
+                        <router-link to="/about" class="menu-item">About</router-link>
                         <a href="#" @click="logout">Logout</a>
                     </div>
                 </div>
@@ -91,6 +84,12 @@ export default {
         },
         toggleMenu() {
             this.showMenu = !this.showMenu;
+        },
+        showSettings() {
+            this.$emit('show-settings');
+        },
+        showProfile() {
+            this.$store.commit('toggleProfileVisibility');
         },
         async logout() {
             try {
