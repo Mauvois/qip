@@ -18,6 +18,7 @@
     </div>
 </template>
 
+
 <script>
 import axios from '@/axios.js';
 import Sidebar from './Sidebar.vue';
@@ -87,7 +88,8 @@ export default {
 .dashboard {
     display: flex;
     height: 100%;
-    /* Ensure it takes full height of its container */
+    flex-direction: row;
+    /* Horizontal layout by default */
 }
 
 .content {
@@ -95,37 +97,48 @@ export default {
     display: flex;
     flex-direction: column;
     height: 100%;
-    /* Ensure it expands to the full height */
 }
 
 .timelines {
     display: flex;
     justify-content: stretch;
-    /* Adjust to stretch the child elements */
     align-items: stretch;
     flex-grow: 1;
     width: 100%;
-    /* Ensure full width */
 
     >* {
         flex: 1;
-        /* Give equal width to all child elements */
     }
 }
 
 .timelines>*:nth-child(odd) {
     background-color: #f5f5f5;
-    /* Very light grey for odd timelines */
 }
 
 .timelines>*:nth-child(even) {
     background-color: #eae9e9;
-    /* Light grey for even timelines */
 }
 
 @media (max-width: 600px) {
+    .dashboard {
+        flex-direction: column;
+        /* Vertical layout for small screens */
+    }
+
+    .dashboard>.sidebar {
+        order: -1;
+        /* Sidebar on top */
+        height: 10%;
+        /* Sidebar takes up 12% of the screen height */
+    }
+
+    .dashboard>.content {
+        height: 88%;
+        /* Remaining content takes up 88% of the screen height */
+    }
+
     .timelines {
         flex-direction: column;
+        /* Adjust timelines for small screens */
     }
-}
-</style>
+}</style>

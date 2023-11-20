@@ -6,21 +6,22 @@
             <div class="mb-6">
                 <h1 class="text-white text-4xl mb-4">QIP</h1>
             </div>
-            <div class="mb-2">
+
+            <div class="mb-2 search-bar">
                 <input type="text" placeholder="Search..." class="w-full px-3 py-2 bg-white rounded-md" />
             </div>
 
             <div class="mb-2">
                 <h2 class="text-white mb-2">Tags</h2>
                 <div class="options-list overflow-y-auto mb-6">
-                    <!-- Options items here -->
+
                 </div>
             </div>
 
             <div class="mb-6 calendars">
                 <h2 class="text-white mb-6">◎</h2>
                 <div class="filters-list overflow-y-auto mb-6">
-                    <!-- Filter options here -->
+
                 </div>
             </div>
             <div class="mb-6">
@@ -47,6 +48,9 @@
             </div>
         </div>
     </div>
+    <div class="search-container">
+        <input type="text" placeholder="Search..." class="search-input" />
+    </div>
 </template>
   
 <script>
@@ -68,12 +72,12 @@ export default {
     },
     data() {
         return {
-            isCollapsed: false, // Sidebar state
-            showMenu: false,  // Hamburger menu state
+            isCollapsed: false,
+            showMenu: false,
         };
     },
     computed: {
-        ...mapState(['user']),  // Map the user state from Vuex store to this component
+        ...mapState(['user']),
         toggleIcon() {
             return this.isCollapsed ? faArrowRight : faArrowLeft;
         }
@@ -93,13 +97,8 @@ export default {
         },
         async logout() {
             try {
-                // Make a request to the logout endpoint
                 await axios.post(`${import.meta.env.VITE_APP_BACKEND_URL}logout/`);
-
-                // Update Vuex state if needed
                 this.$store.commit('setUser', null);
-
-                // Redirect to login or home page
                 this.$router.push('/');
             } catch (error) {
                 console.error('An error occurred during logout:', error);
@@ -112,46 +111,40 @@ export default {
 
   
 <style scoped>
-.menu-dropdown {
-    position: absolute;
-    background-color: #2C2C2C;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    z-index: 1;
-    /* Styling for the dropdown menu */
-}
-
-.menu-dropdown {
-    display: block;
-    background-color: #2C2C2C;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    padding: 10px;
-    z-index: 1;
-    bottom: 100%;
-    margin-bottom: 8px;
-}
-
-.menu-dropdown a {
-    display: block;
-    /* This ensures the <a> tags stack vertically */
-    padding: 8px 10px;
-    color: white;
-    /* Set the text color to white */
-    text-decoration: none;
-}
-
-.menu-dropdown a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.menu-dropdown a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
 .absolute {
     bottom: 10px;
-    /* Adjust as needed for better positioning */
+}
+
+.search-container {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        height: auto;
+    }
+
+    .search-container {
+        display: block;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 10px;
+        background-color: #2C2C2C;
+        z-index: 1000;
+    }
+
+    .search-input {
+        width: calc(100% - 20px);
+        padding: 8px 10px;
+        border-radius: 8px;
+        border: none;
+
+    }
+
+    .search-bar {
+        display: none;
+    }
 }
 </style>
