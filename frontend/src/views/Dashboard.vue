@@ -84,12 +84,12 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .dashboard {
     display: flex;
     height: 100%;
     flex-direction: row;
-    /* Horizontal layout by default */
 }
 
 .content {
@@ -105,10 +105,12 @@ export default {
     align-items: stretch;
     flex-grow: 1;
     width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
 
-    >* {
-        flex: 1;
-    }
+.timelines>* {
+    flex: 1;
 }
 
 .timelines>*:nth-child(odd) {
@@ -122,23 +124,29 @@ export default {
 @media (max-width: 600px) {
     .dashboard {
         flex-direction: column;
-        /* Vertical layout for small screens */
     }
 
-    .dashboard>.sidebar {
-        order: -1;
-        /* Sidebar on top */
-        height: 10%;
-        /* Sidebar takes up 12% of the screen height */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        height: 15%;
+        width: 100%;
+        z-index: 10;
     }
 
     .dashboard>.content {
-        height: 88%;
-        /* Remaining content takes up 88% of the screen height */
+        height: auto;
+        padding-top: 100%;
+        padding-bottom: 10%;
     }
 
     .timelines {
-        flex-direction: column;
-        /* Adjust timelines for small screens */
+        flex-direction: row;
+        overflow-x: auto;
     }
-}</style>
+
+    .timelines>* {
+        flex: 0 0 33.3333%;
+    }
+}
+</style>

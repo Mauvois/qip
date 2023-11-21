@@ -1,29 +1,30 @@
 <template>
-    <div
-        :class="['sidebar', isCollapsed ? 'w-10' : 'w-55', 'bg-slate-700', 'h-screen', 'p-6', 'flex', 'flex-col', 'justify-between']">
-
+    <div class="sidebar bg-slate-700 lg:w-1/4 md:w-1/3 w-full h-screen p-6 flex flex-col justify-between">
         <div class="h-3/4 flex flex-col space-y-4 justify-between">
             <div class="mb-6">
                 <h1 class="text-white text-4xl mb-4">QIP</h1>
             </div>
 
-            <div class="mb-2 search-bar">
-                <input type="text" placeholder="Search..." class="w-full px-3 py-2 bg-white rounded-md" />
+            <div class="mb-2">
+                <input type="text" placeholder="Search..."
+                    class="sidebar-search-bar w-full px-3 py-2 bg-white rounded-md" />
+
             </div>
 
             <div class="mb-2">
                 <h2 class="text-white mb-2">Tags</h2>
-                <div class="options-list overflow-y-auto mb-6">
-
+                <div class="overflow-y-auto mb-6">
+                    <!-- options list content -->
                 </div>
             </div>
 
-            <div class="mb-6 calendars">
+            <div class="mb-6">
                 <h2 class="text-white mb-6">◎</h2>
-                <div class="filters-list overflow-y-auto mb-6">
-
+                <div class="overflow-y-auto mb-6">
+                    <!-- filters list content -->
                 </div>
             </div>
+
             <div class="mb-6">
                 <p class="text-white text-lg" v-if="user">{{ user.username }}</p>
             </div>
@@ -40,30 +41,23 @@
                         <a href="#" @click="logout">Logout</a>
                     </div>
                 </div>
-                <div>
-                    <button @click="toggleSidebar">
-                        <font-awesome-icon :icon="toggleIcon" class="text-black" />
-                    </button>
-                </div>
+
             </div>
         </div>
     </div>
-    <div class="search-container">
-        <input type="text" placeholder="Search..." class="search-input" />
+    <div class="block lg:hidden fixed bottom-0 left-0 w-full p-2.5 bg-gray-800 z-50">
+        <input type="text" placeholder="Search..." class="w-full px-2.5 py-2 rounded-lg border-0" />
     </div>
 </template>
   
+
+
+
+
 <script>
 import { mapState } from 'vuex';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { faBars, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import axios from '@/axios.js';
-
-
-
-library.add(faBars, faArrowLeft, faArrowRight);
-
 
 export default {
     name: 'Sidebar',
@@ -72,20 +66,15 @@ export default {
     },
     data() {
         return {
-            isCollapsed: false,
             showMenu: false,
+            // Removed isCollapsed
         };
     },
     computed: {
         ...mapState(['user']),
-        toggleIcon() {
-            return this.isCollapsed ? faArrowRight : faArrowLeft;
-        }
+        // Removed toggleIcon
     },
     methods: {
-        toggleSidebar() {
-            this.isCollapsed = !this.isCollapsed;
-        },
         toggleMenu() {
             this.showMenu = !this.showMenu;
         },
@@ -103,47 +92,36 @@ export default {
             } catch (error) {
                 console.error('An error occurred during logout:', error);
             }
-        }
+        },
+        // Removed toggleSidebar method
     },
 };
 </script>
 
 
-  
 <style scoped>
-.absolute {
-    bottom: 10px;
-}
-
-.search-container {
-    display: none;
-}
-
 @media (max-width: 600px) {
     .sidebar {
-        height: auto;
-    }
-
-    .search-container {
-        display: block;
         position: fixed;
-        bottom: 0;
+        top: 0;
         left: 0;
         width: 100%;
-        padding: 10px;
-        background-color: #2C2C2C;
-        z-index: 1000;
+        height: auto;
+        padding-top: 10px;
+        /* Adjust as needed */
     }
 
-    .search-input {
-        width: calc(100% - 20px);
-        padding: 8px 10px;
-        border-radius: 8px;
-        border: none;
-
+    .sidebar .absolute {
+        position: relative;
+        top: 0;
+        left: 0;
+        right: auto;
+        bottom: auto;
+        padding: 10px 0;
+        /* Adjust as needed */
     }
 
-    .search-bar {
+    .sidebar-search-bar {
         display: none;
     }
 }
